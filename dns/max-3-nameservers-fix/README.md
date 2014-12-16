@@ -11,14 +11,14 @@ The bind9 file in this repository is the resolvconf hook script passing the dns 
 
 Steps
 ----
-1. Append the following line to all openvpn configuration files
+1. Append the following line to all openvpn configuration files. This makes openvpn communicate the dns servers to resolvconf.
 <pre>
 script-security 2
 up /etc/openvpn/update-resolv-conf
 down /etc/openvpn/update-resolv-conf
 </pre>
 2. Install bind9 and configure it as a forwarding server (https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-caching-or-forwarding-dns-server-on-ubuntu-14-04)
-3. Place the following includes:
+3. Place the following includes. These files get written by the resolvconf hook script.
   - in /etc/bind/named.conf.options <code>include "/etc/bind/named.conf.options";</code>
   - in /etc/bind/named.conf.local <code>include "/etc/bind/named.conf.local.forwardzones";</code>
 4. Remove the resolv.conf link and point it to bind9
