@@ -28,3 +28,5 @@ done
 echo "};" >> $F_FW
 
 service bind9 restart
+
+echo nameserver 127.0.0.1 > /etc/resolv.conf
