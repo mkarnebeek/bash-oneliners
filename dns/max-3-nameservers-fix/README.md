@@ -1,14 +1,13 @@
-Fix for supporting maximum 3 nameservers
+Fix for supporting maximum three nameservers
 ==============
 
-libc supports only 3 entires in /etc/resolv.conf. When opening multiple OpenVPN connections, this causes some DNS servers to not be queried.
+libc supports only three entires in /etc/resolv.conf. When opening multiple OpenVPN connections, this causes some DNS servers to not be queried.
 
 Idea
 -----
-The idea is to have openvpn, like any other linux program, report its nameservers to resolvconf, which keeps track of all 
-dns servers and writes out configuration for various resolvers. I will use bind9 as a resolver, since it supports more than three dns servers. 
+The idea is to have openvpn, like any other linux program, report its nameservers to resolvconf, which keeps track of all dns servers and writes out configuration for various resolvers. I will use bind9 as a resolver, since it supports more than three dns servers. 
 
-This solution uses an ugly solution to get the dns nameservers from resolvconf and to pass them to bind9, and should be replaces with a proper resolvconf hook script
+This solution uses an ugly solution to get the dns nameservers from resolvconf and to pass them to bind9, and should be replaced with a proper resolvconf hook script.
 
 Steps
 ----
