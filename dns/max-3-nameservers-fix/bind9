@@ -1,0 +1,30 @@
+#!/bin/bash
+
+F_FW=/etc/bind/named.conf.options.forwarders
+F_LZ=/etc/bind/named.conf.local.forwardzones
+
+echo "forwarders {" > $F_FW
+echo > $F_LZ
+
+for i in /run/resolvconf/interface/*; do
+  if grep -q search "$i"; then
+    # handle it as a forward zone
+    zone="$(grep search ""$i"" | cut -d ' ' -f 2)"
+    echo "zone \"$zone\" IN {" >> $F_LZ
+	echo "type forward;" >> $F_LZ
+	echo "forwarders {" >> $F_LZ
+	for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
+		echo "$n;" >> $F_LZ
+	done
+    echo "};};" >> $F_LZ
+  else
+    # handle it as a generic forwarder
+	for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
+		echo "$n;" >> $F_FW
+	done
+  fi
+done
+
+echo "};" >> $F_FW
+
+service bind9 restart
