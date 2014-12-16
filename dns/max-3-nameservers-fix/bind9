@@ -6,7 +6,7 @@ F_LZ=/etc/bind/named.conf.local.forwardzones
 echo "forwarders {" > $F_FW
 echo > $F_LZ
 
-for i in /run/resolvconf/interface/*; do
+for i in $(/lib/resolvconf/list-records); do
   if grep -q search "$i"; then
     # handle it as a forward zone
     zone="$(grep search ""$i"" | cut -d ' ' -f 2)"
