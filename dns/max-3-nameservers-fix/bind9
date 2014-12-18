@@ -11,17 +11,17 @@ for i in $(/lib/resolvconf/list-records); do
     # handle it as a forward zone
     zone="$(grep search ""$i"" | cut -d ' ' -f 2)"
     echo "zone \"$zone\" IN {" >> $F_LZ
-	echo "type forward;" >> $F_LZ
-	echo "forwarders {" >> $F_LZ
-	for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
-		echo "$n;" >> $F_LZ
-	done
+    echo "type forward;" >> $F_LZ
+    echo "forwarders {" >> $F_LZ
+    for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
+      echo "$n;" >> $F_LZ
+    done
     echo "};};" >> $F_LZ
   else
     # handle it as a generic forwarder
-	for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
-		echo "$n;" >> $F_FW
-	done
+    for n in $(grep nameserver "$i" | cut -d ' ' -f 2 | grep -v '^127'); do
+      echo "$n;" >> $F_FW
+    done
   fi
 done
 
